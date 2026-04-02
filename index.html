@@ -141,29 +141,32 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. 侧边栏高亮逻辑
+            // 1. 侧边栏高亮逻辑 (ScrollSpy)
             const sections = document.querySelectorAll('section[id]');
             const sidebarLinks = document.querySelectorAll('.sidebar a');
-
-            window.addEventListener('scroll', () => {
+    
+            const updateActiveSection = () => {
                 let currentSection = '';
-                const scrollPos = window.scrollY + (window.innerHeight / 3);
-
+                
                 sections.forEach(section => {
-                    if (scrollPos >= section.offsetTop) {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 200) {
                         currentSection = section.id;
                     }
                 });
-
+    
                 sidebarLinks.forEach(link => {
                     link.classList.remove('active-section');
                     if (link.getAttribute('href') === `#${currentSection}`) {
                         link.classList.add('active-section');
                     }
                 });
-            });
-
-            // 2. 动效触发逻辑
+            };
+    
+            window.addEventListener('scroll', updateActiveSection);
+            updateActiveSection(); // 初始化执行一次
+    
+            // 2. 动效触发逻辑 (Intersection Observer)
             const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -174,28 +177,28 @@
                 threshold: 0.15,
                 rootMargin: "0px 0px -50px 0px" 
             });
-
-            // 选取三种动效类型的元素并监听
+    
             const animatedEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-zoom');
             animatedEls.forEach(el => revealObserver.observe(el));
-        });
-
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const navList = document.getElementById('nav-list');
-
-        menuBtn.addEventListener('click', () => {
-            // 切换菜单显示/隐藏
-            navList.classList.toggle('show');
-            // 切换汉堡图标动画效果
-            menuBtn.classList.toggle('open');
-        });
-
-        // 点击菜单项后自动关闭（提升体验）
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navList.classList.remove('show');
-                menuBtn.classList.remove('open');
-            });
+    
+            // 3. 移动端菜单逻辑
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const navList = document.getElementById('nav-list');
+    
+            if (menuBtn && navList) {
+                menuBtn.addEventListener('click', () => {
+                    navList.classList.toggle('show');
+                    menuBtn.classList.toggle('open');
+                });
+    
+                // 点击菜单项后自动关闭
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navList.classList.remove('show');
+                        menuBtn.classList.remove('open');
+                    });
+                });
+            }
         });
     </script>
 
