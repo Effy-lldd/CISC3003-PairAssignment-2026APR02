@@ -1,6 +1,9 @@
 /* ============================================================
    页面通用 CSS
    ============================================================ */
+/* ============================================================
+   页面通用 CSS — 修复侧边栏 sticky 永久生效版
+   ============================================================ */
 
 :root {
     --accent-green: #bfff00;
@@ -13,11 +16,11 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* 核心：禁止横向溢出 */
+    overflow-x: clip;
     position: relative;
 }
-* { box-sizing: border-box; margin: 0; padding: 0;max-width: 100% !important; }
-body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: smooth; color: #1a1a1a; overflow-x: hidden; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: smooth; color: #1a1a1a; }
 .wrapper { width: 92%; max-width: 1200px; margin: 0 auto; }
 
 /* 导航栏 */
@@ -36,12 +39,11 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
     width: 25px;
     height: 18px;
 }
-
 .hamburger span {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: #333; /* 对应你设计的深色文字 */
+    background-color: #333;
     border-radius: 3px;
     transition: all 0.3s ease;
 }
@@ -54,16 +56,17 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
 
 /* 布局结构 */
 .main-layout { display: flex; flex-direction: column; }
+
+/* ======================
+   手机端样式
+   ====================== */
 @media screen and (max-width: 899px) {
-    /* 容器间距调整 */
     .sidebar { 
         order: 2; 
         padding: 50px 0 80px 0; 
         width: 100%; 
         background: transparent;
     }
-
-    /* 侧边栏标题微调 */
     .sidebar-label {
         text-align: center;
         opacity: 0.4;
@@ -72,23 +75,19 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
         letter-spacing: 3px;
         color: #ccc;
     }
-
-    /* 导航主容器 */
     .nav-wrapper {
         display: flex;
         justify-content: space-around;
-        align-items: center; /* 关键：所有内容垂直居中，锁定在虚线上 */
+        align-items: center;
         position: relative;
-        height: 100px; /* 降低高度，更加紧凑 */
+        height: 100px;
         padding: 0 5%;
         list-style: none !important;
         margin: 0;
     }
-
-    /* 直线轨道定位 */
     .track-line {
         position: absolute;
-        top: 50%; /* 定位在容器正中心 */
+        top: 50%;
         left: 0;
         width: 100%;
         height: 2px;
@@ -97,14 +96,11 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
         opacity: 0.6;
         pointer-events: none;
     }
-
     .track-line svg {
         width: 100%;
         height: 100%;
         display: block;
     }
-
-    /* 列表项布局 */
     .nav-wrapper li {
         position: relative;
         z-index: 5;
@@ -114,21 +110,16 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
         align-items: center;
         justify-content: center;
     }
-
-    /* 站点圆点：始终在虚线上 */
     .nav-wrapper li::after {
         content: "";
         width: 10px;
         height: 10px;
-        background: #CCFF00; /* 荧光黄绿 */
+        background: #CCFF00;
         border-radius: 50%;
         box-shadow: 0 0 12px rgba(204, 255, 0, 0.6);
         position: relative;
         z-index: 10;
-        /* 由 flex 居中自动对齐虚线 */
     }
-
-    /* 链接文字：去掉背景，上下错开 */
     .nav-wrapper li a {
         position: absolute;
         font-size: 0.6rem !important;
@@ -140,106 +131,87 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
         padding: 0 !important;
         transition: 0.3s ease;
     }
-
-    /* 奇数项文字上移，偶数项文字下移 */
     .nav-wrapper li:nth-child(odd) a {
         transform: translateY(-28px);
     }
     .nav-wrapper li:nth-child(even) a {
         transform: translateY(28px);
     }
-
-    /* Active 状态：颜色高亮，去除边框 */
     .nav-wrapper li a.active-section {
-        color: #99CC00 !important; /* 稍微深一点的荧光色保证易读 */
+        color: #99CC00 !important;
         border: none !important;
     }
 
-    .sidebar-sticky { position: static; }
+    /* 手机端关闭 sticky */
+    .sidebar-sticky {
+        position: static !important;
+        top: auto !important;
+    }
 }
 
+/* ======================
+   超小屏手机
+   ====================== */
 @media (max-width: 767px) {
-    /* 1. Header 整体微调 */
     .header {
         padding: 18px 0;
-        background: rgba(10, 10, 10, 0.98); /* 极深色背景，带一点透明 */
-        backdrop-filter: blur(10px); /* 磨砂玻璃效果，高级感来源 */
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(10px);
     }
-
-    /* 2. 汉堡图标：改为荧光色，增加对比度 */
     .hamburger {
         display: flex;
-        z-index: 1001; /* 确保在菜单之上 */
+        z-index: 1001;
     }
     .hamburger span {
-        background-color: var(--accent-green); /* 使用你的主题绿色 */
-        height: 2px; /* 细一点更精致 */
+        background-color: var(--accent-green);
+        height: 2px;
         width: 22px;
     }
-
-    /* 3. 导航菜单：全屏/半屏覆盖，风格统一 */
     .nav-links {
         display: flex;
         flex-direction: column;
-        justify-content: center; /* 居中排列 */
+        justify-content: center;
         align-items: center;
-        
-        /* 定位逻辑 */
-        position: fixed; /* 改为 fixed 锁定全屏 */
+        position: fixed;
         top: 0;
-        right: -100%; /* 默认藏在右侧 */
+        right: -100%;
         width: 100%;
         height: 100vh;
-        
-        background-color: var(--dark-bg); /* 跟 Hero Section 颜色统一 */
-        transition: all 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0); /* 丝滑平移 */
+        background-color: var(--dark-bg);
+        transition: all 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
         box-shadow: none;
         z-index: 1000;
         padding: 0;
-
-        visibility: hidden; /* 隐藏时不响应鼠标，也不被截图工具误读 */
-        pointer-events: none; /* 彻底禁止点击穿透 */
+        visibility: hidden;
+        pointer-events: none;
     }
-
-    /* 激活状态：从右侧划入 */
     .nav-links.show {
         right: 0;
-        display: flex !important;
-
-        visibility: visible; /* 显示时恢复可见 */
-        pointer-events: auto; /* 显示时恢复点击 */
+        visibility: visible;
+        pointer-events: auto;
     }
-
-    /* 4. 菜单文字：加大字号，增加间距 */
     .nav-links li {
         margin: 20px 0;
         opacity: 0;
         transform: translateX(20px);
         transition: 0.4s;
     }
-
-    /* 当菜单显示时，文字产生位移动画 */
     .nav-links.show li {
         opacity: 1;
         transform: translateX(0);
     }
-
     .nav-links a {
-        font-size: 1.8rem !important; /* 加大字号 */
+        font-size: 1.8rem !important;
         font-weight: 700;
         letter-spacing: 2px;
         text-transform: uppercase;
-        color: #555; /* 默认灰色 */
+        color: #555;
         transition: 0.3s;
     }
-
     .nav-links a.active, .nav-links a:hover {
         color: var(--accent-green) !important;
-        text-shadow: 0 0 15px rgba(191, 255, 0, 0.4); /* 荧光发光感 */
+        text-shadow: 0 0 15px rgba(191, 255, 0, 0.4);
     }
-
-    /* 5. 汉堡变 X 后的处理 */
-    /* 汉堡图标点击后的 X 变形效果 (可选) */
     .hamburger.open span:nth-child(1) {
         transform: translateY(8px) rotate(45deg);
     }
@@ -249,40 +221,90 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
     .hamburger.open span:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
     }
-
     .hamburger.open span {
-        background-color: #fff; /* 变 X 时转为白色，防止在深色背景看不见 */
+        background-color: #fff;
     }
-
-    .footer-container {
-        font-size: 0.5rem; /* 缩小字体 */
-    }
-    .footer-side {
-        flex: 0 0 125px!important; /* 缩小两侧宽度，避免挤爆 */
-        font-size: 0.5rem!important; 
-    }
-    .footer-main {
-        font-size: 0.5rem!important;
-    }
+    .footer-container { font-size: 0.5rem; }
+    .footer-side { flex: 0 0 125px!important; font-size: 0.5rem!important; }
+    .footer-main { font-size: 0.5rem!important; }
     .brand { font-size: 0.8rem !important; }
 }
 
-    
+/* ======================
+   电脑端（≥900px）
+   侧边栏悬浮 核心修复版
+   ====================== */
+
 @media screen and (min-width: 900px) {
     .header {
         padding: 18px 0;
-        background: rgba(10, 10, 10, 0.98); /* 极深色背景，带一点透明 */
-        backdrop-filter: blur(10px); /* 磨砂玻璃效果，高级感来源 */
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(10px);
     }
-    .main-layout { flex-direction: row; }
-    .sidebar { flex: 0 0 160px; padding-top: 50px; }
-    .content-area { flex: 1; padding-left: 60px; }
-    .wave-track { display: none; }
-    .track-line { display: none; }
+    .main-layout {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    /* 侧边栏容器 */
+
+    .sidebar {
+        width: 180px;
+        padding-top: 50px;
+        flex-shrink: 0;
+        align-self: stretch; 
+        position: relative;
+        height: auto;
+    }
+    /* ✅ 核心：滚动到这里就粘住 */
+    .sidebar-sticky {
+        /* 必须要有一个 top 值，否则它不知道停在哪 */
+        position: -webkit-sticky; /* 兼容 Safari */
+        position: sticky !important;
+        top: 120px !important; /* 调整这个值，确保它在 Header 下方 */
+        height: fit-content; 
+        z-index: 10;
+    }
+    /* 强制电脑端目录恢复正常垂直布局 */
+    .nav-wrapper {
+        display: block !important;
+        height: auto !important;
+        position: static !important;
+        padding: 0 !important;
+    }
+    .track-line {
+        display: none !important;
+    }
+    .nav-wrapper li {
+        display: block !important;
+        position: static !important;
+        margin-bottom: 12px !important;
+    }
+    .nav-wrapper li::after {
+        display: none !important;
+    }
+    .nav-wrapper li a {
+        position: static !important;
+        transform: none !important;
+        font-size: 0.95rem !important;
+        color: #999 !important;
+    }
+    .nav-wrapper li a:hover {
+        color: var(--accent-green) !important;
+        padding-left: 8px;
+    }
+
+    /* 内容区 */
+    .content-area {
+        flex: 1;
+        padding-left: 60px;
+        min-width: 0;
+    }
 }
-.sidebar-sticky { position: sticky; top: 120px; }
+
 .sidebar-label { font-size: 0.8rem; color: #ccc; margin-bottom: 20px; display: block; letter-spacing: 2px; }
-/* 统一所有页面侧边栏样式 + 平滑动画（全页面生效） */
+
+/* 侧边栏链接样式 */
 .sidebar a,
 .profile-nav-links li a,
 .qual-nav-links li a,
@@ -292,20 +314,18 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
     font-size: 1rem;
     display: block;
     margin-bottom: 15px;
-    transition: 0.3s ease; /* 统一平滑动画 */
-    white-space: nowrap !important;   /* 强制不换行 */
-    overflow: hidden !important;       /* 隐藏超出部分 */
-    text-overflow: ellipsis !important; /* 超出显示 ... */
+    transition: 0.3s ease;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
-
-/* 统一所有页面侧边栏悬停效果 */
 .sidebar a:hover,
 .profile-nav-links li a:hover,
 .qual-nav-links li a:hover,
 .summary-page-body .profile-nav-links li a:hover {
     color: var(--accent-green);
-    padding-left: 10px; /* 悬停左移 */
-}/* 侧边栏当前章节自动高亮样式 */
+    padding-left: 10px;
+}
 .sidebar a.active-section {
   background: transparent;
   padding: 6px 10px;
@@ -313,7 +333,8 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
   color: var(--accent-green) !important;
   font-weight: 600;
 }
-/* 强制清除所有侧边栏列表小圆点（全页面生效） */
+
+/* 清除列表样式 */
 .sidebar ul,
 .profile-nav-links,
 .qual-nav-links,
@@ -327,14 +348,14 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
     list-style: none !important;
 }
 
-/* 通用板块设置 */
+/* 通用板块 */
 .section-common { padding: 80px 0; }
 .big-topic-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1; margin-bottom: 50px; letter-spacing: -1px; }
 .big-text { font-size: 1.3rem; line-height: 1.6; color: #555; max-width: 750px; margin-bottom: 40px; }
 img {
-    max-width: 100%; /* 图片最大宽度不能超过父元素 */
-    height: auto;    /* 保持比例，防止拉伸变形 */
-    display: block;  /* 消除图片底部的微小缝隙 */
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 /* ============================================================
    HOME 页面专用 CSS
@@ -483,11 +504,6 @@ img {
         margin-top: 60px; /* 营造交错感 */
     }
 
-    .content-area { 
-        flex: 1; 
-        padding-left: 60px;
-        min-width: 0 !important; /* 强制允许内容区收缩，不撑开父级 */
-    }
 }
 
 /* 响应式适配 */
