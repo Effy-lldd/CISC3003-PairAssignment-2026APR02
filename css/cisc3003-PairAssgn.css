@@ -1,10 +1,6 @@
 /* ============================================================
    页面通用 CSS
    ============================================================ */
-/* ============================================================
-   页面通用 CSS — 修复侧边栏 sticky 永久生效版
-   ============================================================ */
-
 :root {
     --accent-green: #bfff00;
     --dark-bg: #0a0a0a;
@@ -256,12 +252,10 @@ body { font-family: 'Poppins', sans-serif; background: #fff; scroll-behavior: sm
         position: relative;
         height: auto;
     }
-    /* ✅ 核心：滚动到这里就粘住 */
     .sidebar-sticky {
-        /* 必须要有一个 top 值，否则它不知道停在哪 */
         position: -webkit-sticky; /* 兼容 Safari */
         position: sticky !important;
-        top: 120px !important; /* 调整这个值，确保它在 Header 下方 */
+        top: 120px !important; 
         height: fit-content; 
         z-index: 10;
     }
